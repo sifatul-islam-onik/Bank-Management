@@ -5,7 +5,7 @@ This will be updated as I learn new things.
 
 Version 0.1  
 Features:  
-$ You can regiter new accounts and exit application,data will not be lost  
+$ You can register new accounts and exit application,data will not be lost  
 $ all data is stored in a database.txt file  
 $ passwords are stored using a hash function, so retrieving user passwords from database.txt is prevented  
 $ after login there are four features- withdraw,deposit,show balance and change password  

@@ -7,6 +7,7 @@ Version 0.2
 Features:  
 $ overflow issue in hash generating function has been fixed  
 $ some invalid output cases from user end has been fixed  
+$ unnecessary comments and functions have been removed  
 
 Version 0.1  
 Features:  

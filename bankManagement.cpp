@@ -7,8 +7,6 @@ const int N = 1e6;
 const long long k = 132974;
 long long ac_cnt = 0;
 
-// map<long long, class accounts> database;
-
 class accounts{
     string name;
     long long ac_no;
@@ -74,7 +72,7 @@ void accounts :: reg(){
     }
     ac_no = k + ac_cnt;
     cout << "Your account no is: " << ac_no << endl;
-    cout << "Use this ac no to login!\n" << endl;
+    cout << "Use this account no to login!\n" << endl;
     ac_cnt++;
 }
 
@@ -180,7 +178,6 @@ void mainMenu(){
         newAccount.reg();
         long long id = newAccount.getID();
         database[id - k] = newAccount;
-        // cout << id << endl;
         mainMenu();
     }
     else if(choice==2){
@@ -250,15 +247,10 @@ void exportData(){
     }
     file.close();
 }
-void debug(){
-    cout << database[0].getID() << ' ' << ' ' << database[0].getName() << ' ' << database[0].getPass() << endl;
-    cout << ac_cnt << endl;
-}
 
 int main(){
 
     importData();
-    // debug();
     mainMenu();
     exportData();
 

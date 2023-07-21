@@ -3,6 +3,11 @@ This is my first OOP project.
 I'm still on basic level.
 This will be updated as I learn new things.
 
+Version 0.2
+Features:
+$ overflow issue in hash generating function has been fixed
+$ some invalid output cases from user end has been fixed
+
 Version 0.1
 Features:
 $ You can regiter new accounts and exit application,data will not be lost

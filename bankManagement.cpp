@@ -7,6 +7,8 @@ const int N = 1e6;
 const long long k = 132974;
 long long ac_cnt = 0;
 
+// map<long long, class accounts> database;
+
 class accounts{
     string name;
     long long ac_no;
@@ -46,12 +48,12 @@ public:
 accounts database[N];
 
 long long hashGen(string s){
-    int prime = 7;
+    long long prime = 7;
     const int mod = 1e9 + 7;
     long long hash = 0;
     for (int i = 0; i < s.size();++i){
-        hash += (s[i] * prime) % mod;
-        prime = (prime * prime) % mod;
+        hash += ((s[i] * prime) % mod);
+        prime = ((prime * prime) % mod);
     }
     return hash;
 }
@@ -66,8 +68,10 @@ void accounts :: reg(){
     getline(cin, password);
     passHash = hashGen(password);
     balance = 0;
-    cout << "Enter initial deposit:" << endl;
-    deposit();
+    while(balance==0){
+        cout << "Enter initial deposit:" << endl;
+        deposit();
+    }
     ac_no = k + ac_cnt;
     cout << "Your account no is: " << ac_no << endl;
     cout << "Use this ac no to login!\n" << endl;
@@ -77,6 +81,10 @@ void accounts :: reg(){
 void accounts :: deposit(){
     double dep;
     cin >> dep;
+    if(dep<=0){
+        cout << "Operation failed!\nInvalid deposit amount!" << endl;
+        return;
+    }
     balance += dep;
     cout << "Operation Successfull!" << endl;
     cout << "Current balance is: " << balance << endl;
@@ -87,6 +95,10 @@ void accounts :: withdraw(){
     cin >> wd;
     if(balance<wd){
         cout << "Not enough balance!\n" << endl;
+        return;
+    }
+    else if(wd<0){
+        cout << "Operation failed!\nInvalid withdraw amount" << endl;
         return;
     }
     balance -= wd;

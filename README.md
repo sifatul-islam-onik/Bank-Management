@@ -6,12 +6,12 @@ This will be updated as I learn new things.
 Version 0.2  
 Features:  
 $ overflow issue in hash generating function has been fixed  
-$ some invalid output cases from user end has been fixed  
+$ some invalid input cases from user end has been fixed  
 $ unnecessary comments and functions have been removed  
 
 Version 0.1  
 Features:  
-$ You can regiter new accounts and exit application,data will not be lost  
+$ You can register new accounts and exit application,data will not be lost  
 $ all data is stored in a database.txt file  
 $ after login there are four features- withdraw,deposit,show balance and change password  
 $ Corner cases from user input are still not handled,I will update it later  

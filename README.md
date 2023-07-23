@@ -5,7 +5,7 @@ This will be updated as I learn new things.
 
 Version 0.3  
 Features:  
-$ two new features:transfer money and account statement have been added  
+$ two new features : transfer money and account statement have been added  
 $ a minor issue has been fixed
 
 Version 0.2  

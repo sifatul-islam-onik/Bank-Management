@@ -9,6 +9,7 @@ long long ac_cnt = 0;
 
 class accounts{
     string name;
+    string statement;
     long long ac_no;
     double balance;
     long long passHash;
@@ -17,6 +18,10 @@ public:
     void reg();
     void deposit();
     void withdraw();
+    void transfer(long long rcv,long long id);
+    void setStatement(string s){
+        statement += s;
+    }
     void setName(string s){
         name = s;
     }
@@ -28,6 +33,9 @@ public:
     }
     void setBal(double d){
         balance = d;
+    }
+    string getStatement(){
+        return statement;
     }
     long long getPass(){
         return passHash;
@@ -56,6 +64,20 @@ long long hashGen(string s){
     return hash;
 }
 
+string timeNow(){
+    time_t now = time(0);
+    string date = ctime(&now);
+    date.pop_back();
+    return date;
+}
+
+void printStatement(string s){
+    stringstream total(s);
+    string line;
+    while(getline(total,line,','))
+        cout << line << endl;
+}
+
 void accounts :: reg(){
     cout << "Enter Full name:" << endl;
     fflush(stdin);
@@ -73,6 +95,10 @@ void accounts :: reg(){
     ac_no = k + ac_cnt;
     cout << "Your account no is: " << ac_no << endl;
     cout << "Use this account no to login!\n" << endl;
+    statement = "";
+    string s = timeNow();
+    statement += (s + "," + "Account created...,");
+    statement += (s + "," + "BDT " + to_string(balance) + " deposited...,");
     ac_cnt++;
 }
 
@@ -85,6 +111,8 @@ void accounts :: deposit(){
     }
     balance += dep;
     cout << "Operation Successfull!" << endl;
+    string s = timeNow();
+    statement += (s + "," + "BDT " + to_string(dep) + " deposited...,");
     cout << "Current balance is: " << balance << endl;
 }
 
@@ -101,6 +129,25 @@ void accounts :: withdraw(){
     }
     balance -= wd;
     cout << "Operation Successfull!" << endl;
+    string s = timeNow();
+    statement += (s + "," + "BDT " + to_string(wd) + " withdrawn...,");
+    cout << "Current balance is: " << balance << endl;
+}
+
+void accounts::transfer(long long rcv,long long id){
+    long long amnt;
+    cout << "Enter transfer amount:" << endl;
+    cin >> amnt;
+    if(amnt<=0 || amnt>database[id - k].balance){
+        cout << "Invalid transfer amount!" << endl;
+        return;
+    }
+    balance += amnt;
+    database[id - k].balance -= amnt;
+    cout << "Transfer successfull!\n";
+    string s = timeNow();
+    statement += (s + "," + "BDT " + to_string(amnt) + " received from ac no " + to_string(id) + " ...,");
+    database[id - k].statement += (s + "," + "BDT " + to_string(amnt) + " transfered to ac no " + to_string(rcv) + " ...,");
     cout << "Current balance is: " << balance << endl;
 }
 
@@ -121,7 +168,9 @@ void accMenu(long long id){
     cout << "1.Show balance" << endl;
     cout << "2.Deposit" << endl;
     cout << "3.Withdraw" << endl;
-    cout << "4.Change Password" << endl;
+    cout << "4.Transfer money" << endl;
+    cout << "5.Account statement" << endl;
+    cout << "6.Change Password" << endl;
     cout << "0.Logout" << endl;
     int choice;
     cin >> choice;
@@ -140,6 +189,25 @@ void accMenu(long long id){
         accMenu(id);
     }
     else if(choice==4){
+        cout << "You can transfer money to any account of ABC Bank" << endl;
+        cout << "Enter receiver's account no:" << endl;
+        long long rcv;
+        cin >> rcv;
+        if(rcv-k<0 || rcv-k>ac_cnt-1){
+            cout << "No account found for this ID" << endl;
+            accMenu(id);
+        }
+        else{
+            database[rcv - k].transfer(rcv, id);
+            accMenu(id);
+        }
+    }
+    else if(choice==5){
+        string s = database[id - k].getStatement();
+        printStatement(s);
+        accMenu(id);
+    }
+    else if(choice==6){
         string pass;
         long long hash;
         cout << "Enter old password:" << endl;
@@ -213,20 +281,22 @@ void importData(){
     file.open("database.txt");
     if(file.is_open()){
         file >> ac_cnt;
+        file.ignore();
         for (int i = 0; i < ac_cnt;++i){
             string name;
+            string statement;
             long long ac_no;
             double balance;
             long long password;
-            file.ignore();
             getline(file, name);
-            file >> ac_no;
-            file >> password;
-            file >> balance;
+            file >> ac_no >> password >> balance;
+            file.ignore();
+            getline(file, statement);
             database[i].setName(name);
             database[i].setID(ac_no);
             database[i].setPass(password);
             database[i].setBal(balance);
+            database[i].setStatement(statement);
         }
     }
     file.close();
@@ -237,20 +307,25 @@ void exportData(){
     file << ac_cnt << endl;
     for (int i = 0; i < ac_cnt;++i){
         string name = database[i].getName();
+        string statement = database[i].getStatement();
         long long id = database[i].getID();
         double balance = database[i].getBal();
         long long password = database[i].getPass();
+        // cout << "debug " << name << endl;
         file << name << endl
              << id << endl
              << password << endl
-             << balance << endl;
+             << balance << endl
+             << statement << endl;
     }
     file.close();
 }
 
 int main(){
 
+    cout << fixed << setprecision(2);
     importData();
+    cout << database[0].getStatement() << endl;
     mainMenu();
     exportData();
 

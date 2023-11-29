@@ -147,8 +147,8 @@ void accounts::transfer(long long rcv,long long id){
     cout << "Transfer successfull!\n";
     string s = timeNow();
     statement += (s + "," + "BDT " + to_string(amnt) + " received from ac no " + to_string(id) + " ...,");
-    database[id - k].statement += (s + "," + "BDT " + to_string(amnt) + " transfered to ac no " + to_string(rcv) + " ...,");
-    cout << "Current balance is: " << balance << endl;
+    database[id - k].statement += (s + "," + "BDT " + to_string(amnt) + " transfered to ac no " + to_string(ac_no) + " ...,");
+    cout << "Current balance is: " << database[id - k].balance << endl;
 }
 
 void errMessage(){
@@ -325,7 +325,6 @@ int main(){
 
     cout << fixed << setprecision(2);
     importData();
-    cout << database[0].getStatement() << endl;
     mainMenu();
     exportData();
 

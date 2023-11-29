@@ -3,6 +3,11 @@ This is my first OOP project.
 I'm still on basic level.  
 This will be updated as I learn new things.  
 
+Version 0.4
+Bug fixes:
+$ account statement glitch in the main menu
+$ account balance glitch after transfer
+
 Version 0.3  
 Features:  
 $ two new features : transfer money and account statement have been added  
